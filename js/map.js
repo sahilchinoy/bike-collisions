@@ -1,4 +1,4 @@
-var map = L.map('map').setView([37.8687926, -122.2726916], 15);
+var map = L.map('map').setView([37.8693776, -122.2680349], 15);
 
 L.tileLayer('http://{s}.tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png', {
 	opacity: 0.7,
