@@ -38,7 +38,7 @@ info.onAdd = function (map) {
 
 info.update = function (options) {
     this._div.innerHTML = (options ?
-         options.streets + '<br /> <b>' + options.index + '</b> danger index <br /><b>' + options.total + '</b> total accidents'
+         '<b>' + options.streets + '</b> <br /> <b>' + options.index + '</b> danger index <br /><b>' + options.total + '</b> total accidents'
         : '<b>Hover over an intersection</b>');
 };
 
@@ -63,13 +63,13 @@ for(var i = 0; i < incidents.length; i++) {
         total: total,
         streets: streets
     })
-    .bindPopup(streets + '</br> <strong>' + quotient + '</strong> danger index'+ '</br> <strong>' + total + '</strong>' + ' collisions')
+    /*.bindPopup(streets + '</br> <strong>' + quotient + '</strong> danger index'+ '</br> <strong>' + total + '</strong>' + ' collisions')*/
     .on('mouseover', function(e) {
+        info.update(e.target.options);})
+    .on('click', function(e) {
         info.update(e.target.options);})
     .addTo(map)
 };
-
-
 
 
 var legend = L.control({position: 'bottomright'});
