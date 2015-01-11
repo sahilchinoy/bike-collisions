@@ -19,7 +19,7 @@ var colorScale = d3.scale.linear()
 for(var i = 0; i < incidents.length; i++) {
     total = incidents[i].count;
     index = incidents[i].danger;
-    quotient = index/45 * 100;
+    quotient = index/55 * 100;
     pct = quotient.toFixed(1);
     coordinates = incidents[i].coordinates;
     
