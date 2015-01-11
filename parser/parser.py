@@ -1,18 +1,19 @@
 from heapq import heappush, heappop, heapify
 from pygeocoder import Geocoder
-import json
+import json, operator
 
 myGeocoder = Geocoder(api_key="AIzaSyC0V4SJE-CLqvBKPWXu0b9iLwR_hmn9avo")
 
-
 outputfile = open('parsed_full.txt','w')
-partyfile = open('records.txt', 'r')
+partyfile = open('records.txt','r')
 
 collisionDictionary = {}
 totalsDictionary = {}
 dangerIndex = {}
 hourDictionary = {}
 weatherDictionary = {}
+streetsDictionary = {}
+yearDictionary = {}
 
 def hourizer(time):
 	if time >= 0 and time < 100:
@@ -63,6 +64,17 @@ def hourizer(time):
 		return 22
 	elif time >= 2300 and time < 2400:
 		return 23
+    
+    
+def parseSeason(month):
+    if month == 12 or month <= 2:
+        return 'AWinter'
+    elif month <=5:
+        return 'BSpring'
+    elif month <=8:
+        return 'CSummer'
+    else:
+        return 'DFall'
 
 def parseWeather(weather):
 	weatherDict = {'A': 'Clear', 'B': 'Cloudy', 'C': 'Raining', 'D': 'Snowing', 'E': 'Fog', 'F': 'Other', 'G': 'Wind', '-': 'N/A'}
@@ -73,53 +85,69 @@ def incidentScore(severity):
 	return severityDictionary[severity]
 
 with open('records.txt', 'r') as read:
-	for line in read:
-		splitPartyRecord = partyfile.readline().split(",")
-		splitLine = line.split(",")
-		streets = [splitLine[3].replace("\"", ""), splitLine[4].replace("\"", "")]
-		streets.sort()
-		streets = tuple(streets)
+    for line in read:
+        splitLine = line.split(",")
+        streets = [splitLine[3].replace("\"", ""), splitLine[4].replace("\"", "")]
+        streets.sort()
+        streets = tuple(streets)
 
-		date = splitLine[0]
-		time = int(splitLine[1])
-		hour = hourizer(time)
-		weekday = splitLine[2]
-		weather = parseWeather(splitLine[5])
-		severity = splitLine[6]
-		killed = splitLine[10]
-		injured = splitLine[11]
+        date = splitLine[0]
+        year = date[:4]
+        month = date[4:6]
+        ymonth = year + month
+        season = parseSeason(int(date[4:6]))
+        syear =   year + ' ' + str(season)
+        
+        time = int(splitLine[1])
+        hour = hourizer(time)
+        weekday = splitLine[2]
+        weather = parseWeather(splitLine[5])
+        severity = splitLine[6]
+        killed = splitLine[10]
+        injured = splitLine[11]
 
-		if streets in collisionDictionary.keys():
-			collisionDictionary[streets].append((date, time, weekday))
-		else:
-			collisionDictionary[streets] = []
-			collisionDictionary[streets].append((date, time, weekday))
+        if streets in collisionDictionary.keys():
+            collisionDictionary[streets].append((date, time, weekday))
+        else:
+            collisionDictionary[streets] = []
+            collisionDictionary[streets].append((date, time, weekday))
 
-		if streets in totalsDictionary:
-			totalsDictionary[streets] += 1
-		else:
-			totalsDictionary[streets] = 1
+        if streets in totalsDictionary:
+            totalsDictionary[streets] += 1
+        else:
+            totalsDictionary[streets] = 1
 
-		if hour in hourDictionary:
-			hourDictionary[hour] += 1
-		else:
-			hourDictionary[hour] = 1
+        if hour in hourDictionary:
+            hourDictionary[hour] += 1
+        else:
+            hourDictionary[hour] = 1
 
-		if weather in weatherDictionary:
-			weatherDictionary[weather] += 1
-		else:
-			weatherDictionary[weather] = 1
+        if month in yearDictionary:
+            yearDictionary[month] += 1
+        else:
+            yearDictionary[month] = 1
 
-		if streets in dangerIndex:
-			dangerIndex[streets] += incidentScore(severity)
-		else:
-			dangerIndex[streets] = incidentScore(severity)
+        if weather in weatherDictionary:
+            weatherDictionary[weather] += 1
+        else:
+            weatherDictionary[weather] = 1
 
-for key in collisionDictionary.keys():
+        if streets in dangerIndex:
+            dangerIndex[streets] += incidentScore(severity)
+        else:
+            dangerIndex[streets] = incidentScore(severity)
+            
+        
+ysorted = sorted(dangerIndex.items(), key=operator.itemgetter(1))
+
+for x in ysorted:
+    print(str(x[0]) + ',' + str(x[1]))
+
+"""for key in collisionDictionary.keys():
 	if totalsDictionary[key] > 1:
 		streets = key[0] + ' and ' + key[1]
 		print(streets)
 		coords = myGeocoder.geocode(streets + ", Berkeley CA").coordinates
 
-		outputfile.write(json.dumps({'streets': streets, 'coordinates': coords, 'count': totalsDictionary[key], 'danger': dangerIndex[key]},))
-		outputfile.write("\n")
+		outputfile.write(json.dumps({'streets': streets, 'coordinates': coords, 'count': totalsDictionary[key], 'danger': dangerIndex[key]}))
+		outputfile.write(",\n")"""
