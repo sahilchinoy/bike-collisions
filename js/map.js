@@ -1,5 +1,5 @@
 var maxIndex = 46;
-var maxNormalized = 3.66666666667;
+var maxNormalized = 34.4595960766;
 
 var map = L.map('map').setView([37.8612545, -122.2671221], 14);
 
@@ -60,6 +60,8 @@ info.addTo(map);
 
 var circle = new Array();
 
+max_index = 0;
+
 for(var i = 0; i < incidents.length; i++) {
     bikes = incidents[i].bikes;
     total = incidents[i].total;
@@ -82,7 +84,7 @@ for(var i = 0; i < incidents.length; i++) {
         normalized: normalized,
         bikes: bikes,
         total: total,
-        streets: streets
+        streets: streets,
     })
     .on('mouseover', function(e) {
         info.update(e.target.options);})
@@ -90,6 +92,8 @@ for(var i = 0; i < incidents.length; i++) {
         info.update(e.target.options);})
     .addTo(map)
 };
+
+console.log(max_index)
 
 function changeDisplay(type) {
     for(var i = 0; i < circle.length; i++) {

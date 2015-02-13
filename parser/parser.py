@@ -1,5 +1,6 @@
 from heapq import heappush, heappop, heapify
 from pygeocoder import Geocoder
+from math import pow
 import json, operator
 
 myGeocoder = Geocoder(api_key="AIzaSyC0V4SJE-CLqvBKPWXu0b9iLwR_hmn9avo")
@@ -48,11 +49,13 @@ with open('records.txt', 'r') as read:
 				index[streets] = incidentScore(severity)
 
 for key in bikes.keys():
-	if index[key] > 10:
+	if bikes[key] > 1:
 		streets = key[0] + ' and ' + key[1]
+		print(streets)
 		coords = myGeocoder.geocode(streets + ", Berkeley CA").coordinates
 		
-		normalized = float(index[key])/float(totals[key])
+		normalized = pow((float(bikes[key])/float(totals[key])),0.4) * float(index[key])
+
 		if normalized > maxNormalized:
 			maxNormalized = normalized
 
