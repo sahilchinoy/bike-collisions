@@ -3,11 +3,12 @@ var maxNormalized = 34.4595960766;
 
 var map = L.map('map').setView([37.8612545, -122.2671221], 14);
 
-L.tileLayer('http://{s}.tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png', {
-	opacity: 0.5,
+L.tileLayer('http://{s}.tile.stamen.com/toner-lite/{z}/{x}/{y}.png', {
+    opacity: 0.5,
     detectRetina: true,
     minZoom: 12,
-    attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+    attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> | Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+    subdomains: 'abcd',
 })
 .addTo(map);
 
@@ -34,7 +35,7 @@ var Toggle = L.Control.extend({
 
     onAdd: function (map) {
         var container = L.DomUtil.create('div', 'toggle');
-        container.innerHTML = '<div class="btn-group" role="group"><button id="btn1" class="btn btn-sm btn-default active" onclick="changeDisplay(0)">Absolute</button> <button id="btn2" class="btn btn-sm btn-default" onclick="changeDisplay(1)">Rate</button></div>';
+        container.innerHTML = '<div class="btn-group" role="group"><button id="btn1" class="btn btn-sm btn-default active" onclick="changeDisplay(0)"><b>Absolute</b></button> <button id="btn2" class="btn btn-sm btn-default" onclick="changeDisplay(1)"><b>Rate</b></button></div>';
         return container;
     }
 });
@@ -59,8 +60,6 @@ info.update = function (options) {
 info.addTo(map);
 
 var circle = new Array();
-
-max_index = 0;
 
 for(var i = 0; i < incidents.length; i++) {
     bikes = incidents[i].bikes;
@@ -92,8 +91,6 @@ for(var i = 0; i < incidents.length; i++) {
         info.update(e.target.options);})
     .addTo(map)
 };
-
-console.log(max_index)
 
 function changeDisplay(type) {
     for(var i = 0; i < circle.length; i++) {
