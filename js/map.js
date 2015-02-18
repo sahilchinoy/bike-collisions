@@ -53,7 +53,7 @@ info.onAdd = function (map) {
 
 info.update = function (options) {
     this._div.innerHTML = (options ?
-         '<b>' + options.streets + '</b> <br /> <b>' + options.index + '</b> exposure index <br /><b>' + options.normalized + '</b> rate index <br /><b>' + options.bikes + '</b> bike accidents <br /><b>' + options.total + '</b> total accidents'
+         '<b>' + options.streets + '</b> <br /> <b>' + options.index + '</b> absolute exposure index <br /><b>' + options.normalized + '</b> exposure rate index <br /><b>' + options.bikes + '</b> bike accidents <br /><b>' + options.total + '</b> total accidents'
         : '<b>Hover over an intersection</b>');
 };
 
