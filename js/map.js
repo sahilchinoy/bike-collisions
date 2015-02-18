@@ -1,7 +1,7 @@
 var maxIndex = 46;
 var maxNormalized = 34.4595960766;
 
-var map = L.map('map').setView([37.864058, -122.267218], 14);
+var map = L.map('map').setView([37.863940, -122.267110], 14);
 
 L.tileLayer('http://{s}.tile.stamen.com/toner-lite/{z}/{x}/{y}.png', {
     opacity: 0.5,
@@ -11,8 +11,6 @@ L.tileLayer('http://{s}.tile.stamen.com/toner-lite/{z}/{x}/{y}.png', {
     subdomains: 'abcd',
 })
 .addTo(map);
-
-
 
 var milvia = [[37.856425, -122.269043],[37.871748, -122.270741],[37.871968, -122.270602],[37.885340, -122.272265],[37.885704, -122.272887],[37.886127, -122.273144],[37.886364, -122.273187],[37.886618, -122.273756]]
 var channing = [[37.868054, -122.249985],[37.862868, -122.290098],[37.861318, -122.297834]]
@@ -27,12 +25,11 @@ var routes = [milvia,channing,russell,virginia,king,california,hillegass]
 
 for(var i = 0; i < routes.length; i++) {
     L.polyline(routes[i], {
-    color: 'blue',
-    clickable: false,
-    weight: 3,
-    opacity: 0.4
-
-}).addTo(map);
+        color: 'blue',
+        clickable: false,
+        weight: 3,
+        opacity: 0.4
+    }).addTo(map);
 }
 
 var radius = d3.scale.linear()
@@ -145,7 +142,7 @@ var blvd = L.control({position: 'bottomright'});
 blvd.onAdd = function(map) {
     var div = L.DomUtil.create('div', 'info blvd')
     
-    div.innerHTML = '<i style="background: blue"></i> Bicycle boulevard';
+    div.innerHTML = '<i style="background: blue"></i> <b>Bicycle boulevard</b>';
 
     return div
 };
