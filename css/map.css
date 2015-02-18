@@ -10,7 +10,7 @@
     text-align: right;
 }
 
-.legend {
+.legend .blvd {
     text-align: left;
     line-height: 18px;
     color: #555;
@@ -21,6 +21,15 @@
     float: left;
     margin-right: 8px;
     opacity: 0.7;
+}
+
+.blvd i {
+    width: 18px;
+    height: 4px;
+    float: left;
+    margin-right: 8px;
+    margin-top: 6px;
+    opacity: 0.4;
 }
 
 .toggle {
